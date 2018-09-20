@@ -1,0 +1,23 @@
+<h1>Choose Sectors</h1>
+
+<p class="lead"><%= select_tag "Sector", options_from_collection_for_select(Sector.all, :id, :title), {:class=>'form-control',:id => "sector_select", :prompt => 'Selected Vendor'}  %>
+</p>
+
+<ul>
+<% if @user_sectors %>
+	<% @user_sectors.each do |sector|%>
+		<li><%= link_to "#{sector.title}", sector_path(sector) %></li>
+	<%end%>
+<% end %>
+</ul>
+<script type="text/javascript">
+	$('select#sector_select').on('change', function(event) {
+	  var selected_resource_id = $(this).val();
+		$.ajax({
+			type: "POST",
+			url: '/association_user_sector',
+			data: { sector_id: selected_resource_id}
+		});
+	});
+</script>
+
